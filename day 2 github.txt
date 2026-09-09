@@ -1,0 +1,124 @@
+PS C:\Users\pawan> mongosh
+Current Mongosh Log ID: 6aa10d2ae781ae2c4b6f87b5
+Connecting to:          mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.10.0
+MongoNetworkError: connect ECONNREFUSED 127.0.0.1:27017
+PS C:\Users\pawan> mongosh "mongodb+srv://cluster0.l9n2heg.mongodb.net/" --apiVersion 1 --username 2024pceacrvinay304_db_user
+Enter password: *************
+Current Mongosh Log ID: 6aa10f3360ed42ca4405e8fe
+Connecting to:          mongodb+srv://<credentials>@cluster0.l9n2heg.mongodb.net/?appName=mongosh+2.10.0
+Using MongoDB:          8.0.32 (API Version 1)
+Using Mongosh:          2.10.0
+
+For mongosh info see: https://www.mongodb.com/docs/mongodb-shell/
+
+Atlas atlas-wfq7gu-shard-0 [primary] test> use electromartDB
+switched to db electromartDB
+Atlas atlas-wfq7gu-shard-0 [primary] electromartDB> for (let i = 1; i <= 50; i++) {
+|     db.items.insertOne({
+|         itemId: i,
+|         itemName: "Item " + i,
+|         category:
+|             i % 5 === 0 ? "Tablet" :
+|             i % 5 === 1 ? "Smartwatch" :
+|             i % 5 === 2 ? "Speaker" :
+|             i % 5 === 3 ? "Charger" :
+|             "Earbuds",
+|         brand:
+|             i % 3 === 0 ? "Sony" :
+|             i % 3 === 1 ? "Boat" :
+|             "Realme",
+|         price: 500 + (i * 300),
+|         stock: 5 + i,
+|         rating: 2.5 + ((i % 4) * 0.5),
+|         inStock: i % 3 !== 0,
+|         tags: [
+|             "gadget",
+|             i % 2 === 0 ? "trending" : "latest"
+|         ],
+|         seller: {
+|             sellerId: 2000 + i,
+|             sellerName: "Vendor " + i
+|         },
+|         createdAt: new Date()
+|     });
+| }
+{
+  acknowledged: true,
+  insertedId: ObjectId('6aa10fa060ed42ca4405e930')
+}
+Atlas atlas-wfq7gu-shard-0 [primary] electromartDB> db.items.find({ category: "Tablet" })
+| db.items.find({ inStock: true })
+| db.items.find({ price: { $gt: 12000 } })
+| db.items.find({ price: { $lt: 5000 } })
+| db.items.find({ price: { $gte: 5000, $lte: 15000 } })
+| db.items.find({ "seller.sellerName": "Vendor 10" })
+|
+[
+  {
+    _id: ObjectId('6aa10f9c60ed42ca4405e908'),
+    itemId: 10,
+    itemName: 'Item 10',
+    category: 'Tablet',
+    brand: 'Boat',
+    price: 3500,
+    stock: 15,
+    rating: 3.5,
+    inStock: true,
+    tags: [ 'gadget', 'trending' ],
+    seller: { sellerId: 2010, sellerName: 'Vendor 10' },
+    createdAt: ISODate('2026-09-09T07:49:48.456Z')
+  }
+]
+Atlas atlas-wfq7gu-shard-0 [primary] electromartDB> db.items.updateOne({ itemId: 1 }, { $set: { price: 6000 } })
+| db.items.updateOne({ itemId: 2 }, { $set: { price: 9000, stock: 60 } })
+| db.items.updateOne({ itemId: 3 }, { $set: { "seller.sellerName": "Elite Vendor" } })
+| db.items.updateOne({ itemId: 4 }, { $push: { tags: "discount" } })
+| db.items.updateOne({ itemId: 5 }, { $addToSet: { tags: "gadget" } })
+| db.items.updateOne({ itemId: 6 }, { $inc: { stock: 15 } })
+| db.items.updateOne({ itemId: 6 }, { $inc: { stock: -3 } })
+|
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+Atlas atlas-wfq7gu-shard-0 [primary] electromartDB> db.items.updateMany(
+|     { category: "Tablet" },
+|     { $set: { inStock: true } }
+| )
+|
+| db.items.updateMany(
+|     { brand: "Boat" },
+|     { $inc: { price: 500 } }
+| )
+|
+| db.items.updateOne(
+|     { itemId: 10 },
+|     {
+|         $set: { price: 18000, inStock: true },
+|         $inc: { stock: 5 },
+|         $push: { tags: "discount" }
+|     }
+| )
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+Atlas atlas-wfq7gu-shard-0 [primary] electromartDB> db.items.deleteOne({ itemId: 10 })
+|
+| db.items.deleteMany({ category: "Tablet" })
+|
+| db.items.deleteMany({ price: { $gt: 15000 } })
+|
+| db.items.deleteMany({})
+{ acknowledged: true, deletedCount: 39 }
+Atlas atlas-wfq7gu-shard-0 [primary] electromartDB> db.items.deleteMany({})
+|
+| db.items.drop()
+true
+Atlas atlas-wfq7gu-shard-0 [primary] electromartDB>
