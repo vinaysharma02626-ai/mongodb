@@ -1,0 +1,33 @@
+db.products.countDocuments()
+db.products.find()
+db.products.find( { price : { $gt : 20000 } } )
+db.products.find( { price : { $gt : 20000 } } ).explain("executionStats")
+db.products.createIndex( { price : 1 })
+db.products.getIndexes()
+db.products.find( { price :{ $gt : 20000 } } ).explain("executionStats")
+db.products.createIndex({
+    category: 1,
+    price: -1
+})
+db.products.createIndex({ tags: 1 })
+
+db.products.find({ tags: "bestseller" }).explain("executionStats")db.products.find({
+  description: "This is a high quality Clothing product from HP with excellent features and performance."
+}).explain("executionStats")
+db.products.createIndex({ productId: "hashed" })
+
+db.products.getIndexes()
+
+db.products.find({ productId: 101 })
+db.products.findOne({ email: "customer3@example.com" })
+db.users.createIndex(
+  { email: 1 },
+  {
+    partialFilterExpression: { status: "active" }
+  }
+)
+db.products.createIndex({ brand: 1 })
+db.products.createIndex({ manufacturer: 1 })
+db.products.createIndex({ storage: 1 })
+db.products.createIndex({ megapixels: 1 })
+db.products.createIndex({ lens: 1 })
